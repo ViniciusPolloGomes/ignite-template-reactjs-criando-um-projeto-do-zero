@@ -1,5 +1,55 @@
 
-.contentContainer{
-    max-width: 1120px;
+.container{
+    max-width: 700px;
     margin : 0 auto;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+
+    a{
+        
+
+        & + a{
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+        > strong{
+            color: var(--heading);
+            font-size: 2rem;
+
+            &:hover{
+                color: var(--headinghover);
+            }
+        }
+        p{
+            color: var(--info);
+            font-size: 0.95rem;
+            margin: 0.4rem 0  1rem 0;
+            
+        }
+        > div{
+            time{
+                color: var(--info);
+                font-size: 0.78rem;
+                font-weight: 100; 
+                margin-right: 1rem;
+                margin-left: 0.2rem;
+           }
+            > strong{
+                 color: var(--info);
+                 font-size: 0.78rem;
+                 font-weight: 100;
+                 margin-left: 0.2rem;
+            }
+        }
+    }
+
+
+}
+
+.footerpost{
+    display: flex;
+    flex-direction: row;
 }

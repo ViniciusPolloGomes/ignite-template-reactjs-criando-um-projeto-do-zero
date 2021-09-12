@@ -12,7 +12,10 @@
 
 :root{
   --background:#1A1D23;
-  
+  --white:#fafafaf6;
+  --heading: #F8F8F8;
+  --info: #BBBBBB;
+  --headinghover:#FF57B2;
 }
 body{
   background:var( --background);
