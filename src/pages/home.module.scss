@@ -8,6 +8,16 @@
     display: flex;
     flex-direction: column;
 
+     button {
+        margin-top: 1rem;
+        background-color: var(--background);
+        border:none;
+        text-align: left;
+        color:var(--headinghover);
+        font: 1rem;
+        font-weight: bold;
+    }
+    
     a{
         
 

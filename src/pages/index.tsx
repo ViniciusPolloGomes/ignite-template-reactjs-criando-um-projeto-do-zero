@@ -2,10 +2,9 @@ import { GetStaticProps } from 'next';
 import Prismic from '@prismicio/client'
 import Link from 'next/link';
 import { getPrismicClient } from '../services/prismic';
-
+import { useState, useEffect } from 'react';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-
 import Head from 'next/head';
 import { RichText } from 'prismic-dom';
 import React from 'react';
@@ -21,9 +20,7 @@ interface Post {
     author: string;
   };
 }
-interface PostsProps {
-  posts: Post[];
-}
+
 interface PostPagination {
   next_page: string;
   results: Post[];
@@ -33,54 +30,104 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ posts }: PostsProps) {
+export default function Home({ postsPagination }: HomeProps) {
 
+  const [newpostspagination, setPostPagination] = useState<PostPagination>(postsPagination);
+  const [newnextpage, setNextPage] = useState(newpostspagination.next_page);
+  const [newposts, setPosts] = useState<Post[]>(newpostspagination.results);
 
+  async function handleLoadingPosts(e: Post[]) {
 
-  return (
-    <>
-      <Head>
-        <title>
-          Home - Spacetraveling
-        </title>
-      </Head>
-      <main className={styles.container}>
-        <div className={styles.content}>
-          {posts.map(post => (
-            <Link href={`/post/${post.slug}`}>
-              <a key={post.slug}>
-                <strong>{post.data.title}</strong>
-                <p>{post.data.subtitle}</p>
-                <div className={styles.footerpost}>
-                  <BiCalendar color='#BBBBBB' size={16}/>
-                  <time>{post.updatedAt}</time>
-                  <BiUser color='#BBBBBB' size={16}/>
-                  <strong>{post.data.author}</strong>
-                </div>
-              </a>
-            </Link>
-          ))}
-        </div>
-      </main>
-    </>
-  );
+    const response: PostPagination = await fetch(newnextpage)
+      .then(resp => resp.json())
 
+    console.log(response)
+
+    setPosts(e.concat(response.results));
+
+    setNextPage(response.next_page)
+  }
+
+  if (newnextpage === null) {
+    return (
+      <>
+        <Head>
+          <title>
+            Home - Spacetraveling
+          </title>
+        </Head>
+        <main className={styles.container} >
+          <div className={styles.content}>
+            {newposts.map(post => (
+              <Link href={`/post/${post.slug}`}>
+                <a key={post.slug}>
+                  <strong>{post.data.title}</strong>
+                  <p>{post.data.subtitle}</p>
+                  <div className={styles.footerpost}>
+                    <BiCalendar color='#BBBBBB' size={16} />
+                    <time>{post.updatedAt}</time>
+                    <BiUser color='#BBBBBB' size={16} />
+                    <strong>{post.data.author}</strong>
+                  </div>
+                </a>
+              </Link>
+            ))}
+          </div>
+        </main>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Head>
+          <title>
+            Home - Spacetraveling
+          </title>
+        </Head>
+        <main className={styles.container} >
+          <div className={styles.content}>
+            {newposts.map(post => (
+              <Link href={`/post/${post.slug}`}>
+                <a key={post.slug}>
+                  <strong>{post.data.title}</strong>
+                  <p>{post.data.subtitle}</p>
+                  <div className={styles.footerpost}>
+                    <BiCalendar color='#BBBBBB' size={16} />
+                    <time>{post.updatedAt}</time>
+                    <BiUser color='#BBBBBB' size={16} />
+                    <strong>{post.data.author}</strong>
+                  </div>
+                </a>
+              </Link>
+            ))}
+            <button onClick={() => handleLoadingPosts(newposts)}>Carregar mais...</button>
+          </div>
+        </main>
+      </>
+    );
+  }
 }
 
 export const getStaticProps: GetStaticProps = async () => {
+
   const prismic = getPrismicClient();
+
   const postsResponse = await prismic.query([
     Prismic.predicates.at('document.type', 'posts')
   ], {
-    fetch: ['posts.title', 'posts.content', 'posts.author','posts.subtitle'],
-    pageSize: 100, 
+    fetch: ['posts.title', 'posts.content', 'posts.author', 'posts.subtitle'],
+    pageSize: 1,
+    page: 1,
   })
-    
-    
-  // console.log(postsResponse);
-  // console.log(JSON.stringify(postsResponse,null,2));
 
-  const posts = postsResponse.results.map(post => {
+  //console.log(postsResponse);
+  //console.log(JSON.stringify(postsResponse,null,2));
+
+  const next_page = postsResponse.next_page;
+
+  //console.log(JSON.stringify(nextpage));
+
+  const results = postsResponse.results.map(post => {
     return {
       slug: post.uid,
       data: {
@@ -88,7 +135,7 @@ export const getStaticProps: GetStaticProps = async () => {
         subtitle: post.data.subtitle,
         author: post.data.author,
       },
-      updatedAt: new Date(post.last_publication_date).toLocaleDateString('pt-br', {
+      updatedAt: new Date(post.first_publication_date).toLocaleDateString('pt-br', {
         day: '2-digit',
         month: 'short',
         year: 'numeric'
@@ -97,6 +144,9 @@ export const getStaticProps: GetStaticProps = async () => {
   });
 
   return {
-    props: { posts }
+    props: {
+      postsPagination: { results, next_page }
+    }
   }
-};
+
+}
