@@ -81,8 +81,8 @@ export default function Home({ postsPagination }: HomeProps) {
         <main className={styles.container} >
           <div  className={styles.content}>
             {newposts.map(post => (
-              <Link  href={`/post/${post.slug}`}>
-                <a key={post.slug}>
+              <Link  key={post.slug} href={`/post/${post.slug}`}>
+                <a >
                   <strong>{post.data.title}</strong>
                   <p>{post.data.subtitle}</p>
                   <div className={styles.footerpost}>
