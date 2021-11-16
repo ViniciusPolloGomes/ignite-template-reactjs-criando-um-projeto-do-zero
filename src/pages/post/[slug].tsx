@@ -7,8 +7,12 @@ import styles from './post.module.scss';
 import { Head } from 'next/document';
 import Prismic from '@prismicio/client'
 import intervalToDuration from 'date-fns/intervalToDuration';
-import { Key } from 'react';
+import { useState } from 'react';
 import ApiSearchResponse from '@prismicio/client/types/ApiSearchResponse';
+import { resourceLimits } from 'worker_threads';
+import { RichText } from "prismic-dom";
+import { format ,parseISO,formatDistance,formatRelative} from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR'
 
 interface Post {
   slug: string;
@@ -28,25 +32,43 @@ interface Post {
   };
 }
 
-interface PostProps {
-  post: Post;
-}
 
-export default function Post() {
+export default function Post({ postsResponse }) {
+  const post: Post = postsResponse;
+
+  const firstDate = parseISO(post.first_publication_date);
+  const secondDate = parseISO(post.first_publication_date);
+
+  const formattedDate = format(firstDate,"dd 'de' MMMM', às ' HH:mm",{locale:ptBR});
+
   return (
     <>
       <main>
         <article>
-          <img></img>
-          <h1>oi</h1>
+          <img src={post.data.banner.url}></img>
+          <h1>{post.data.title}</h1>
           <div>
-            <time></time>
-            <strong></strong>
+            <time>
+              {formattedDate}
+            </time>
+          <strong>{post.data.author}</strong>
+        </div>
+
+        {post.data.content.map(content => (
+          <div key={content.heading}>
+            <h2>{content.heading}</h2>
+
+            <div
+              className={`${styles.postContent}`}
+              dangerouslySetInnerHTML={{
+                __html: RichText.asHtml(content.body),
+              }}
+            />
+
           </div>
-          <h1></h1>
-          <strong></strong>
-        </article>
-      </main>
+        ))}
+      </article>
+    </main>
     </>
   );
 }
@@ -54,7 +76,7 @@ export default function Post() {
 export const getStaticPaths = async ({ params }) => {
   const prismic = getPrismicClient();
 
-  const slug: string = params;
+  const slug = params;
 
   const postsResponse = await prismic.query([
     Prismic.predicates.at('document.type', 'posts')
@@ -83,11 +105,9 @@ export const getStaticPaths = async ({ params }) => {
     };
   });
 
-  const paths = posts.map(post=> ({
+  const paths = posts.map(post => ({
     params: { slug: post.slug },
   }));
-
-  //console.log(paths)
 
   return {
     paths,
@@ -99,29 +119,11 @@ export const getStaticPaths = async ({ params }) => {
 export const getStaticProps = async ({ params }) => {
   const prismic = getPrismicClient();
 
-  const slug: string = params;
+  const { slug } = params;
 
-
-
-  /*const post={
-      first_publication_date: response.first_publication_date ;
-      data: {
-        title: response.data.title ;
-        banner: {
-          url:  ;
-        };
-        author: ;
-        content: {
-          heading:  ;
-          body: {
-            text:  ;
-          }[];
-        }[];
-      };
-    
-  }*/
+  const postsResponse = await prismic.getByUID('posts', String(slug), {});
 
   return {
-    props: {  slug }
+    props: { postsResponse }
   }
 };
