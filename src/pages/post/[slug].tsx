@@ -11,12 +11,16 @@ import { useState } from 'react';
 import ApiSearchResponse from '@prismicio/client/types/ApiSearchResponse';
 import { resourceLimits } from 'worker_threads';
 import { RichText } from "prismic-dom";
-import { format ,parseISO,formatDistance,formatRelative} from 'date-fns';
+import { format ,parseISO} from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR'
+
+interface PostProps {
+  post: Post;
+}
 
 interface Post {
   slug: string;
-  first_publication_date: string | null;
+  first_publication_date: string;
   data: {
     title: string;
     banner: {
@@ -35,7 +39,7 @@ interface Post {
 
 export default function Post({ postsResponse }) {
   const post: Post = postsResponse;
-
+ 
   const firstDate = parseISO(post.first_publication_date);
   const secondDate = parseISO(post.first_publication_date);
 
