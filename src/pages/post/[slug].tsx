@@ -41,8 +41,7 @@ export default function Post({ postsResponse }) {
   const post: Post = postsResponse;
  
   const firstDate = parseISO(post.first_publication_date);
-  const secondDate = parseISO(post.first_publication_date);
-
+  
   const formattedDate = format(firstDate,"dd 'de' MMMM', às ' HH:mm",{locale:ptBR});
 
   return (
