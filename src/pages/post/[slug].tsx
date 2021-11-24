@@ -20,7 +20,7 @@ interface PostProps {
 
 interface Post {
   slug: string;
-  first_publication_date: string;
+  first_publication_date: string | null;
   data: {
     title: string;
     banner: {
