@@ -11,7 +11,7 @@ import React from 'react';
 import { BiUser, BiCalendar } from "react-icons/bi";
 
 interface Post {
-  uid: string;
+  uid?: string;
   slug: string;
   first_publication_date: string | null;
   data: {
@@ -19,10 +19,7 @@ interface Post {
     subtitle: string;
     author: string;
   };
-  updatedAt: string;
 }
-
-
 
 interface PostPagination {
   next_page: string;
@@ -56,12 +53,7 @@ export default function Home({ postsPagination }: HomeProps) {
           title: post.data.title,
           subtitle: post.data.subtitle,
           author: post.data.author,
-        },
-        updatedAt: new Date(post.first_publication_date).toLocaleDateString('pt-br', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        })
+        } 
       };
     });
    
@@ -87,7 +79,7 @@ export default function Home({ postsPagination }: HomeProps) {
                   <p>{post.data.subtitle}</p>
                   <div className={styles.footerpost}>
                     <BiCalendar color='#BBBBBB' size={16} />
-                    <time>{post.updatedAt}</time>
+                    <time>{post.first_publication_date}</time>
                     <BiUser color='#BBBBBB' size={16} />
                     <strong>{post.data.author}</strong>
                   </div>
@@ -124,16 +116,12 @@ export default function Home({ postsPagination }: HomeProps) {
     const results = postsResponse.results.map(post => {
       return {
         slug: post.uid,
+        first_publication_date: post.first_publication_date,
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,
           author: post.data.author,
         },
-        updatedAt: new Date(post.first_publication_date).toLocaleDateString('pt-br', {
-          day: '2-digit',
-          month: 'short',
-          year: 'numeric'
-        })
       };
     });
 
