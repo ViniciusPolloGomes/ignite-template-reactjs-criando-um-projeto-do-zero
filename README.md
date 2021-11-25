@@ -23,7 +23,7 @@ O objetivo dessa amostra de aplicação é criar um site de postagens contendo a
 
 
 Protótipo foi feito no Figma pela Comunidade RocketSeat.
-<a>https://www.figma.com/file/Jae4Qf7XrUS4dPXPbu8f8X/Desafios-M%C3%B3dulo-3-ReactJS-(Copy)?node-id=0%3A1</a>
+https://www.figma.com/file/Jae4Qf7XrUS4dPXPbu8f8X/Desafios-M%C3%B3dulo-3-ReactJS-(Copy)?node-id=0%3A1
 
 
 Após clonar o projeto no Visual Studio, do github apenas entre no terminal e navegue até a pasta do projeto usando comandos windows "cd".
@@ -35,5 +35,5 @@ Digite  yarn dev  para iniciar aplicação.
 A aplicação sera iniciada e estara disponivel no navegador em http://localhost:3000/
 
 Necessario configurar seu prismic.io e seu arquivo env.local mais intruções em:
-<a>https://www.notion.so/Desafio-01-Criando-um-projeto-do-zero-b1a3645d286b4eec93f5f1f5476d0ff7</a>
+https://www.notion.so/Desafio-01-Criando-um-projeto-do-zero-b1a3645d286b4eec93f5f1f5476d0ff7
 </pre>
