@@ -1,8 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 *{
   margin:0;
@@ -16,23 +11,32 @@
   --heading: #F8F8F8;
   --info: #BBBBBB;
   --headinghover:#FF57B2;
+
+  
+  --body: #d7d7d7;
 }
+
+html,
 body{
   background:var( --background);
-  color:var(--white);
+  color:var(--body);
 }
 
 body, input ,textarea , select, button{
-  font: 400 1rem "Roboto", sans-serif;
+  font: 400 1.125rem "Inter", sans-serif;
 }
 
 button{
   cursor:pointer;
+  background: none;
+  border: 0;
+  font-weight: 600;
 }
 
 a{
   color:inherit;
   text-decoration: none;
+  display: inline-block;
 }
 
 @media (max-width: 1080px){
