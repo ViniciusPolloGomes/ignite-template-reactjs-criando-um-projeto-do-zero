@@ -14,8 +14,7 @@ A postagem deve ser capaz de retornar caminhos de documentos de postagens prísm
 A postagem deve ser capaz de retornar o documento de postagem prísmico usando getStaticProps.
 A postagem deve ser capaz de renderizar as informações do documento post.
 A postagem deve ser capaz de renderizar a mensagem de carregamento em caso de fallback.
-</pre>
-<pre>
+
 O objetivo dessa amostra de aplicação é criar um site de postagens contendo algumas tecnologias:
 *Reactjs BiBlioteca de Desenvolvimento
 *NextJs Framework
