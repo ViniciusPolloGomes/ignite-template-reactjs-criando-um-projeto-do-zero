@@ -34,4 +34,5 @@ Se estiver na pasta do projeto no terminal apenas digite yarn para carregamento.
 Digite  yarn dev  para iniciar aplicação. 
 
 A aplicação sera iniciada e estara disponivel no navegador em http://localhost:3000/
+
 </pre>
